@@ -1,7 +1,8 @@
 Program that enables dynamic importing based on *.dynimp.json files. (Meant for Minecraft Bedrock Edition)
 
 Example *.dynimp.json file:
-```json{
+```json
+{
     // Portable Executable to point imports at runtime, can be any portable executable file.
     "module": "my_module.dll",
     // Imports can be functions/data
