@@ -41,9 +41,9 @@ public class ArgumentParser
         }
     }
 
-    public string Get(string key, string defaultValue = null)
+    public string? Get(string key, string? defaultValue = null)
     {
-        return _arguments.TryGetValue(key, out string value) ? value : defaultValue;
+        return _arguments.TryGetValue(key, out string? value) ? value : defaultValue;
     }
 
     public bool Has(string key)

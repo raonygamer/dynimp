@@ -10,6 +10,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AsmResolver" Version="6.0.0-beta.1" />
+      <PackageReference Include="AsmResolver.PE" Version="6.0.0-beta.1" />
+      <PackageReference Include="AsmResolver.PE.File" Version="6.0.0-beta.1" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 

@@ -17,6 +17,6 @@ public class DynImp
         [JsonProperty("points")] public List<ImportPoint> Points { get; set; } = [];
     }
 
-    [JsonProperty("module")] public string Module { get; set; } = string.Empty;
+    [JsonProperty("target")] public string Target { get; set; } = string.Empty;
     [JsonProperty("imports")] public List<ImportDescriptor> Imports { get; set; } = [];
 }
