@@ -1,5 +1,5 @@
 Program that enables dynamic importing based on *.dynimp.json files. (Meant for Minecraft Bedrock Edition)
-
+To use dynmap.exe download the latest release and use: dynmap --help
 Example *.dynimp.json file:
 ```json
 {
