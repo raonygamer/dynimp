@@ -1,7 +1,7 @@
-## dynimp
-# Program that enables dynamic importing based on *.dynimp.json files. (Meant for Minecraft Bedrock Edition)
-# To use dynimp.exe download the latest release and use: dynimp --help
-# Example *.dynimp.json file:
+# dynimp
+## Program that enables dynamic importing based on *.dynimp.json files. (Meant for Minecraft Bedrock Edition)
+## To use dynimp.exe download the latest release and use: dynimp --help
+## Example *.dynimp.json file:
 ```json
 {
     // Portable Executable to point imports at runtime, can be any portable executable file.
