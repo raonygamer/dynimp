@@ -1,6 +1,6 @@
 {
     // Portable Executable to point imports at runtime, can be any portable executable file.
-    "module": "my_module.dll",
+    "target": "my_module.dll",
     // Imports can be functions/data
     "imports": [
         {
@@ -16,7 +16,7 @@
                     // The type of the point, can be "address" or "signature"
                     "type": "address",
                     // The value of the point, can be a hex string with wildcards (signature) 
-                    // or a hex number (address)
+                    // or a hex string prefixed with 0x (address)
                     // if address is used, it will be added to the base of the module address at 
                     // runtime.
                     "value": "0x12345678"
