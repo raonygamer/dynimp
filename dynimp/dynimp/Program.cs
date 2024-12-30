@@ -103,7 +103,7 @@ class Program
         string machine = parser.Get("machine", "x64")!;
         string version = parser.Get("version", "any")!;
         
-        string dynimpFileText = await File.ReadAllTextAsync(parser.Get("dynimp"));
+        string dynimpFileText = await File.ReadAllTextAsync(parser.Get("dynimp")!);
         try
         {
             var dynImp = JsonConvert.DeserializeObject<DynImp>(dynimpFileText);
@@ -197,24 +197,20 @@ class Program
                 Logger.TraceLn($"Found import directory at RVA 0x{importDataDirectory.VirtualAddress:X8}.");
                 Logger.TraceLn($"Parsing imports...");
 
-                var importsList = ReadImportsAtRVA(moduleBinary, importDataDirectory.VirtualAddress);
+                var importsList = ReadImportsAtRVA(moduleBinary, importDataDirectory.VirtualAddress).Where(x => !x.IsZero());
                 var importsWithoutDynamicModule = importsList.Where(x =>
                     moduleBinary.CreateReaderAtRva(x.Name).ReadUtf8String() != dynImp.Target).ToList();
                 var dynamicModules = importsList.Where(x =>
                     moduleBinary.CreateReaderAtRva(x.Name).ReadUtf8String() == dynImp.Target).ToList();
-
-                byte[] zeroBuffer = new byte[20];
-                Array.Fill<byte>(zeroBuffer, 0);
                 
                 var idtSection = moduleBinary.Sections.FirstOrDefault(x => x.Name == IMPORT_SECTION_NAME);
                 var oldImportsList = new List<ModuleImportDescriptor>();
                 if (idtSection is not null)
                 {
                     Logger.WarnLn($"Found existing {IMPORT_SECTION_NAME} (Import Directory Table) section. Merging and Overwriting...");
-                    oldImportsList = ReadImportsAtRVA(moduleBinary, idtSection.Rva);
+                    oldImportsList = ReadImportsAtRVA(moduleBinary, idtSection.Rva).Where(x => !x.IsZero()).ToList();
                     moduleBinary.Sections.Remove(idtSection);
                 }
-
                 importsWithoutDynamicModule = importsWithoutDynamicModule.Concat(oldImportsList).Distinct().ToList();
                 
                 var dynImpSection = moduleBinary.Sections.FirstOrDefault(x => x.Name == DYNIMP_SECTION_NAME);
@@ -222,12 +218,12 @@ class Program
                 if (dynImpSection is not null)
                 {
                     Logger.WarnLn($"Found existing {DYNIMP_SECTION_NAME} (Dynamic Import Table) section. Merging and overwriting...");
-                    oldDynImpsList = ReadImportsAtRVA(moduleBinary, dynImpSection.Rva);
+                    oldDynImpsList = ReadImportsAtRVA(moduleBinary, dynImpSection.Rva).Where(x => !x.IsZero()).ToList();
                     moduleBinary.Sections.Remove(dynImpSection);
                 }
-
                 oldDynImpsList = oldDynImpsList.Concat(dynamicModules).Distinct().ToList();
 
+                importsWithoutDynamicModule.Add(ModuleImportDescriptor.GetZero());
                 var importsWithoutDynamicModuleBytes = importsWithoutDynamicModule.SelectMany(x => x.ToBytes()).ToArray();
                 idtSection = new PESection(IMPORT_SECTION_NAME, SectionFlags.MemoryRead | SectionFlags.MemoryWrite | SectionFlags.ContentInitializedData)
                 {
@@ -240,7 +236,8 @@ class Program
                     idtSection.Rva,
                     (uint)importsWithoutDynamicModuleBytes.Length
                 ));
-                
+
+                oldDynImpsList.Add(ModuleImportDescriptor.GetZero());
                 var oldDynImpsBytes = oldDynImpsList.SelectMany(x => x.ToBytes()).ToArray();
                 dynImpSection = new PESection(DYNIMP_SECTION_NAME, SectionFlags.MemoryRead | SectionFlags.MemoryWrite | SectionFlags.ContentInitializedData)
                 {

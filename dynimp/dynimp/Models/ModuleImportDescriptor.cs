@@ -1,51 +1,42 @@
 namespace dynimp.Models;
 
-public class ModuleImportDescriptor
-{
+public class ModuleImportDescriptor {
     public uint OriginalFirstThunk { get; set; }
     public uint TimeDateStamp { get; set; }
     public uint ForwarderChain { get; set; }
     public uint Name { get; set; }
     public uint FirstThunk { get; set; }
 
-    public bool Equals(ModuleImportDescriptor other)
-    {
+    public bool Equals(ModuleImportDescriptor other) {
         return OriginalFirstThunk == other.OriginalFirstThunk &&
                TimeDateStamp == other.TimeDateStamp &&
                ForwarderChain == other.ForwarderChain &&
                Name == other.Name &&
                FirstThunk == other.FirstThunk;
     }
-    
-    public override bool Equals(object? obj)
-    {
+
+    public override bool Equals(object? obj) {
         return obj is ModuleImportDescriptor other && Equals(other);
     }
-    
-    public override int GetHashCode()
-    {
+
+    public override int GetHashCode() {
         return HashCode.Combine(OriginalFirstThunk, TimeDateStamp, ForwarderChain, Name, FirstThunk);
     }
-    
-    public static bool operator ==(ModuleImportDescriptor left, ModuleImportDescriptor right)
-    {
+
+    public static bool operator ==(ModuleImportDescriptor left, ModuleImportDescriptor right) {
         return left.Equals(right);
     }
-    
-    public static bool operator !=(ModuleImportDescriptor left, ModuleImportDescriptor right)
-    {
+
+    public static bool operator !=(ModuleImportDescriptor left, ModuleImportDescriptor right) {
         return !left.Equals(right);
     }
-    
-    public override string ToString()
-    {
+
+    public override string ToString() {
         return $"OriginalFirstThunk: {OriginalFirstThunk}, TimeDateStamp: {TimeDateStamp}, ForwarderChain: {ForwarderChain}, Name: {Name}, FirstThunk: {FirstThunk}";
     }
-    
-    public static ModuleImportDescriptor FromBytes(byte[] bytes)
-    {
-        return new ModuleImportDescriptor
-        {
+
+    public static ModuleImportDescriptor FromBytes(byte[] bytes) {
+        return new ModuleImportDescriptor {
             OriginalFirstThunk = BitConverter.ToUInt32(bytes, 0),
             TimeDateStamp = BitConverter.ToUInt32(bytes, 4),
             ForwarderChain = BitConverter.ToUInt32(bytes, 8),
@@ -53,9 +44,8 @@ public class ModuleImportDescriptor
             FirstThunk = BitConverter.ToUInt32(bytes, 16)
         };
     }
-    
-    public byte[] ToBytes()
-    {
+
+    public byte[] ToBytes() {
         List<byte> bytes = new List<byte>();
         bytes.AddRange(BitConverter.GetBytes(OriginalFirstThunk));
         bytes.AddRange(BitConverter.GetBytes(TimeDateStamp));
@@ -63,5 +53,23 @@ public class ModuleImportDescriptor
         bytes.AddRange(BitConverter.GetBytes(Name));
         bytes.AddRange(BitConverter.GetBytes(FirstThunk));
         return bytes.ToArray();
+    }
+
+    public bool IsZero() {
+        return OriginalFirstThunk == 0 &&
+               TimeDateStamp == 0 &&
+               ForwarderChain == 0 &&
+               Name == 0 &&
+               FirstThunk == 0;
+    }
+
+    public static ModuleImportDescriptor GetZero() {
+        return new ModuleImportDescriptor {
+            OriginalFirstThunk = 0,
+            TimeDateStamp = 0,
+            ForwarderChain = 0,
+            Name = 0,
+            FirstThunk = 0
+        };
     }
 }

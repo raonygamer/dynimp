@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dynimp", "dynimp\dynimp.csproj", "{1ADF1483-5AF9-459F-91F1-CB016B2CC994}"
 EndProject
 Global
@@ -12,5 +15,8 @@ Global
 		{1ADF1483-5AF9-459F-91F1-CB016B2CC994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ADF1483-5AF9-459F-91F1-CB016B2CC994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1ADF1483-5AF9-459F-91F1-CB016B2CC994}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

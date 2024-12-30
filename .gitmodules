@@ -1,0 +1,6 @@
+[submodule "libdynimp/vendor/jsoncpp"]
+	path = libdynimp/vendor/jsoncpp
+	url = https://github.com/open-source-parsers/jsoncpp
+[submodule "libdynimp/vendor/fmt"]
+	path = libdynimp/vendor/fmt
+	url = https://github.com/fmtlib/fmt
